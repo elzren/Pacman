@@ -17,6 +17,11 @@ public:
 public:
     NCurses();
     ~NCurses();
+
+	static int getInput()
+	{
+		return getch();
+	}
 };
 
 #endif

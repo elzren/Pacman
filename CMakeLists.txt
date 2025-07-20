@@ -18,6 +18,9 @@ find_package(Curses REQUIRED)
 set(SOURCES
     src/main.cpp
     src/engine/ncurses.cpp
+    src/engine/stateManager.cpp
+    src/game/states/mainMenuState.cpp
+    src/game/states/gameState.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES}) 
