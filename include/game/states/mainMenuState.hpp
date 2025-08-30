@@ -7,10 +7,10 @@
 
 class MainMenuState : public State
 {
-private:
+  private:
     WINDOW* m_window{};
 
-public:
+  public:
     MainMenuState();
     virtual ~MainMenuState();
 

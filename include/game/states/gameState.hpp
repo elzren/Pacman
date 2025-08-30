@@ -7,10 +7,10 @@
 
 class GameState : public State
 {
-private:
+  private:
     WINDOW* m_window{nullptr};
 
-public:
+  public:
     GameState();
     virtual ~GameState();
 

@@ -1,19 +1,13 @@
 #include "game/states/mainMenuState.hpp"
 #include "game/states/gameState.hpp"
 
-MainMenuState::MainMenuState()
-{
-    m_window = newwin(10, 20, 0, 0);
-}
+MainMenuState::MainMenuState() { m_window = newwin(10, 20, 0, 0); }
 
-MainMenuState::~MainMenuState()
-{
-    delwin(m_window);
-}
+MainMenuState::~MainMenuState() { delwin(m_window); }
 
 void MainMenuState::handleInput(StateManager& manager, int input)
 {
-    if(input == 'q')
+    if (input == 'q')
         manager.popState();
     else if (input == '\n')
     {
@@ -21,14 +15,13 @@ void MainMenuState::handleInput(StateManager& manager, int input)
     }
 }
 
-void MainMenuState::update([[maybe_unused]] StateManager& manager)
-{
-
-}
+void MainMenuState::update([[maybe_unused]] StateManager& manager) {}
 
 void MainMenuState::render()
 {
+    // copy blanks to every position in the window, clearing the screen
     werase(m_window);
+
     mvwaddstr(m_window, 1, 1, "Main menu window");
     wrefresh(m_window);
 }

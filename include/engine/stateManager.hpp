@@ -1,16 +1,16 @@
 #ifndef STATE_MANAGER_HPP
 #define STATE_MANAGER_HPP
 
-#include <vector>
-#include <memory>
 #include "engine/state.hpp"
+#include <memory>
+#include <vector>
 
 class StateManager
 {
-private:
+  private:
     std::vector<std::unique_ptr<State>> m_states{};
-    
-public:
+
+  public:
     StateManager();
 
     void pushState(std::unique_ptr<State> state);

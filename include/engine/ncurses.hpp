@@ -5,23 +5,18 @@
 
 class NCurses
 {
-public:
+  public:
     enum ColorPair
-	{
-		BLUE_BLACK = 1,
-		GREEN_BLACK,
-		RED_BLACK,
-		WHITE_BLACK,
-	};
+    {
+        BLUE_BLACK = 1,
+        GREEN_BLACK,
+        RED_BLACK,
+        WHITE_BLACK,
+    };
 
-public:
+  public:
     NCurses();
     ~NCurses();
-
-	static int getInput()
-	{
-		return getch();
-	}
 };
 
 #endif

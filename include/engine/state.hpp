@@ -5,7 +5,7 @@ class StateManager;
 
 class State
 {
-public:
+  public:
     virtual ~State() = default;
 
     virtual void handleInput(StateManager& manager, int input) = 0;

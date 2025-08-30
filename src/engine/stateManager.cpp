@@ -1,55 +1,52 @@
 #include "engine/stateManager.hpp"
-#include "engine/ncurses.hpp"
-#include <thread>
 #include <chrono>
+#include <ncurses.h>
+#include <thread>
 
-StateManager::StateManager()
-{
-        m_states.reserve(3);
-}
+StateManager::StateManager() { m_states.reserve(3); }
 
 void StateManager::pushState(std::unique_ptr<State> state)
 {
-         m_states.push_back(std::move(state));
+    m_states.push_back(std::move(state));
 }
 
 void StateManager::popState()
 {
-        if (!m_states.empty())
-                m_states.pop_back();
+    if (!m_states.empty())
+        m_states.pop_back();
 }
 
 State* StateManager::currentState() const
 {
-        return m_states.empty() ? nullptr : m_states.back().get();
+    return m_states.empty() ? nullptr : m_states.back().get();
 }
 
 void StateManager::handleInput(int input)
 {
-        if (auto* cs{currentState()})
-                cs->handleInput(*this, input);
+    if (auto* cs{currentState()})
+        cs->handleInput(*this, input);
 }
 
 void StateManager::update()
 {
-        if (auto* cs{currentState()})
-                cs->update(*this);
+    if (auto* cs{currentState()})
+        cs->update(*this);
 }
 
 void StateManager::render()
 {
-        if (auto* cs{currentState()})
-                cs->render();
+    if (auto* cs{currentState()})
+        cs->render();
 }
 
 void StateManager::run()
 {
-        while(currentState())
-        {
-                int input{NCurses::getInput()};
-                handleInput(input);
-                update();
-                render();
-                std::this_thread::sleep_for(std::chrono::milliseconds(100));
-        }
+    while (currentState())
+    {
+        int input{getch()};
+        handleInput(input);
+        update();
+        render();
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    }
 }
