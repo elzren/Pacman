@@ -1,8 +1,12 @@
 #include "game/states/gameState.hpp"
 
-GameState::GameState() { m_window = newwin(10, 20, 0, 0); }
+GameState::GameState()
+{
+    m_window = std::make_unique<Window>(0, 0, 0, 0);
+    m_window->setTopLabel("Pacman");
+}
 
-GameState::~GameState() { delwin(m_window); }
+GameState::~GameState() {}
 
 void GameState::handleInput(StateManager& manager, int input)
 {
@@ -19,7 +23,10 @@ void GameState::update([[maybe_unused]] StateManager& manager) {}
 
 void GameState::render()
 {
-    werase(m_window);
-    mvwaddstr(m_window, 1, 1, "Game window");
-    wrefresh(m_window);
+    if (m_window)
+    {
+        m_window->erase();
+        m_window->addString(2, 1, "Game window");
+        m_window->refresh();
+    }
 }

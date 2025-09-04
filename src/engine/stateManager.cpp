@@ -23,8 +23,7 @@ State* StateManager::currentState() const
 
 void StateManager::handleInput(int input)
 {
-    if (auto* cs{currentState()})
-        cs->handleInput(*this, input);
+    currentState()->handleInput(*this, input);
 }
 
 void StateManager::update()

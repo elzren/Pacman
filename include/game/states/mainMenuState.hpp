@@ -3,12 +3,12 @@
 
 #include "engine/state.hpp"
 #include "engine/stateManager.hpp"
-#include <ncurses.h>
+#include "engine/window.hpp"
 
 class MainMenuState : public State
 {
   private:
-    WINDOW* m_window{};
+    std::unique_ptr<Window> m_window{};
 
   public:
     MainMenuState();

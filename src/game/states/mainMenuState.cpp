@@ -1,9 +1,13 @@
 #include "game/states/mainMenuState.hpp"
 #include "game/states/gameState.hpp"
 
-MainMenuState::MainMenuState() { m_window = newwin(10, 20, 0, 0); }
+MainMenuState::MainMenuState()
+{
+    m_window = std::make_unique<Window>(0, 0, 0, 0);
+    m_window->setTopLabel("Pacman");
+}
 
-MainMenuState::~MainMenuState() { delwin(m_window); }
+MainMenuState::~MainMenuState() {}
 
 void MainMenuState::handleInput(StateManager& manager, int input)
 {
@@ -19,9 +23,10 @@ void MainMenuState::update([[maybe_unused]] StateManager& manager) {}
 
 void MainMenuState::render()
 {
-    // copy blanks to every position in the window, clearing the screen
-    werase(m_window);
-
-    mvwaddstr(m_window, 1, 1, "Main menu window");
-    wrefresh(m_window);
+    if (m_window)
+    {
+        m_window->erase();
+        m_window->addString(2, 1, "Main menu window");
+        m_window->refresh();
+    }
 }

@@ -26,6 +26,8 @@ NCurses::NCurses()
     if (has_colors())
     {
         start_color();
+        use_default_colors(); // Allow use of -1 for default colors
+
         init_pair(BLUE_BLACK, COLOR_BLUE, COLOR_BLACK);
         init_pair(GREEN_BLACK, COLOR_GREEN, COLOR_BLACK);
         init_pair(RED_BLACK, COLOR_RED, COLOR_BLACK);
