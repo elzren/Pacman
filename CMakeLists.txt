@@ -20,6 +20,7 @@ set(SOURCES
     src/engine/ncurses.cpp
     src/engine/stateManager.cpp
     src/engine/window.cpp
+    src/engine/menu.cpp
     src/game/states/mainMenuState.cpp
     src/game/states/gameState.cpp
 )

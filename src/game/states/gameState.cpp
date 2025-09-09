@@ -1,4 +1,5 @@
 #include "game/states/gameState.hpp"
+#include "game/states/mainMenuState.hpp"
 
 GameState::GameState()
 {
@@ -13,10 +14,12 @@ void GameState::handleInput(StateManager& manager, int input)
     if (input == 'q')
     {
         manager.popState();
-        manager.popState();
     }
     else if (input == 27) // ESC key pressed
+    {
         manager.popState();
+        manager.pushState(std::make_unique<MainMenuState>());
+    }
 }
 
 void GameState::update([[maybe_unused]] StateManager& manager) {}
