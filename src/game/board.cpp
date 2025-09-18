@@ -1,5 +1,6 @@
 #include "game/board.hpp"
 #include "engine/ncurses.hpp"
+#include "engine/position.hpp"
 
 void Board::setBoard(const std::vector<std::vector<char>>& board)
 {
@@ -21,11 +22,30 @@ void Board::setBoard(const std::vector<std::vector<char>>& board)
 int Board::getHeight() const { return m_height; }
 int Board::getWidth() const { return m_width; }
 
+char Board::getTile(Position position) const
+{
+    if (position.y < m_height && position.x < m_width)
+    {
+        return m_board[position.y][position.x];
+    }
+    else
+    {
+        return ' ';
+    }
+}
+
+void Board::setTile(Position position, char ch)
+{
+    if (position.y < m_height && position.x < m_width)
+    {
+        m_board[position.y][position.x] = ch;
+    }
+}
+
 void Board::render(Window* window) const
 {
     if (window)
     {
-        window->erase();
         for (size_t row{0}; row < m_board.size(); ++row)
         {
             for (size_t column{0}; column < m_board[row].size(); ++column)
@@ -44,7 +64,6 @@ void Board::render(Window* window) const
                 }
             }
         }
-        window->refresh();
     }
 }
 
@@ -53,4 +72,9 @@ bool Board::isInvisibleWall(char ch) const { return ch == 'x'; }
 bool Board::isWall(char ch) const
 {
     return isVisibleWall(ch) || isInvisibleWall(ch);
+}
+bool Board::isWall(Position position) const
+{
+    return isVisibleWall(getTile(position)) ||
+           isInvisibleWall(getTile(position));
 }

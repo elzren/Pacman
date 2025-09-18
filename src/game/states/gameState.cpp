@@ -11,6 +11,7 @@ GameState::GameState()
     m_window->setTopLabel("Pacman");
 
     m_board.setBoard(BoardUtils::stringVectorToCharVector(BoardUtils::maze));
+    m_player.setPosition({34, 16});
 
     int terminalWidth, terminalHeight;
     getmaxyx(stdscr, terminalHeight, terminalWidth);
@@ -34,16 +35,26 @@ void GameState::handleInput(StateManager& manager, int input)
         manager.popState();
         manager.pushState(std::make_unique<MainMenuState>());
     }
+    else
+    {
+        m_player.handleInput(input);
+    }
 }
 
-void GameState::update([[maybe_unused]] StateManager& manager) {}
+void GameState::update([[maybe_unused]] StateManager& manager)
+{
+    m_player.update(m_board);
+}
 
 void GameState::render()
 {
     if (m_window)
     {
         m_window->erase();
+
         m_board.render(m_gameWindow.get());
+        m_player.render(m_gameWindow.get());
+
         m_window->refresh();
     }
 }

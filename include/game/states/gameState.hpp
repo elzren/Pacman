@@ -5,6 +5,7 @@
 #include "engine/stateManager.hpp"
 #include "engine/window.hpp"
 #include "game/board.hpp"
+#include "game/player.hpp"
 #include <memory>
 
 class GameState : public State
@@ -13,6 +14,7 @@ class GameState : public State
     std::unique_ptr<Window> m_window{};
     std::unique_ptr<Window> m_gameWindow{};
     Board m_board{};
+    Player m_player{};
 
   public:
     GameState();

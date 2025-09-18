@@ -25,6 +25,7 @@ set(SOURCES
     src/game/states/gameState.cpp
     src/game/board.cpp
     src/game/boardUtils.cpp
+    src/game/player.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES}) 
