@@ -1,4 +1,5 @@
 #include "engine/ncurses.hpp"
+#include <ncurses.h>
 
 NCurses::NCurses()
 {
@@ -32,6 +33,8 @@ NCurses::NCurses()
         init_pair(GREEN_BLACK, COLOR_GREEN, COLOR_BLACK);
         init_pair(RED_BLACK, COLOR_RED, COLOR_BLACK);
         init_pair(WHITE_BLACK, COLOR_WHITE, COLOR_BLACK);
+        init_pair(BLUE_BLUE, COLOR_BLUE, COLOR_BLUE);
+        init_pair(CYAN_CYAN, COLOR_CYAN, COLOR_CYAN);
     }
 
     clear();   // clears the screen completely on the next call to refresh()

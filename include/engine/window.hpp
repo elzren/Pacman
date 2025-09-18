@@ -1,6 +1,7 @@
 #ifndef WINDOW_HPP
 #define WINDOW_HPP
 
+#include "engine/ncurses.hpp"
 #include <ncurses.h>
 #include <string>
 
@@ -19,12 +20,15 @@ class Window
 
   public:
     Window(int width, int height, int startX, int startY, bool border = true);
+    Window(Window* parentWin, int width, int height, int startX, int startY,
+           bool border = false);
     ~Window();
 
     void erase();
     void refresh();
 
     void addChar(int x, int y, int ch);
+    void addChar(int x, int y, int ch, NCurses::ColorPair colorPair);
     void addString(int x, int y, const std::string& str);
 
     void setTopLabel(std::string_view label);

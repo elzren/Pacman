@@ -1,9 +1,18 @@
 #include "engine/window.hpp"
+#include "engine/ncurses.hpp"
+#include <ncurses.h>
 
 Window::Window(int width, int height, int startX, int startY, bool border)
     : m_width{width}, m_height{height}, m_border{border}
 {
     m_window = newwin(m_height, m_width, startY, startX);
+}
+
+Window::Window(Window* parentWin, int width, int height, int startX, int startY,
+               bool border)
+    : m_width{width}, m_height{height}, m_border{border}
+{
+    m_window = derwin(parentWin->m_window, m_height, m_width, startY, startX);
 }
 
 Window::~Window()
@@ -29,6 +38,15 @@ void Window::erase()
 void Window::refresh() { wrefresh(m_window); }
 
 void Window::addChar(int x, int y, int ch) { mvwaddch(m_window, y, x, ch); }
+
+void Window::addChar(int x, int y, int ch, NCurses::ColorPair colorPair)
+{
+    wattron(m_window, A_BOLD);
+    wattron(m_window, COLOR_PAIR(colorPair));
+    mvwaddch(m_window, y, x, ch);
+    wattroff(m_window, COLOR_PAIR(colorPair));
+    wattroff(m_window, A_BOLD);
+}
 
 void Window::addString(int x, int y, const std::string& str)
 {

@@ -1,10 +1,24 @@
 #include "game/states/gameState.hpp"
+#include "engine/window.hpp"
+#include "game/boardUtils.hpp"
 #include "game/states/mainMenuState.hpp"
+#include <memory>
+#include <ncurses.h>
 
 GameState::GameState()
 {
     m_window = std::make_unique<Window>(0, 0, 0, 0);
     m_window->setTopLabel("Pacman");
+
+    m_board.setBoard(BoardUtils::stringVectorToCharVector(BoardUtils::maze));
+
+    int terminalWidth, terminalHeight;
+    getmaxyx(stdscr, terminalHeight, terminalWidth);
+
+    m_gameWindow = std::make_unique<Window>(
+        m_window.get(), m_board.getWidth(), m_board.getHeight(),
+        (terminalWidth - m_board.getWidth()) / 2,
+        (terminalHeight - m_board.getHeight()) / 2);
 }
 
 GameState::~GameState() {}
@@ -29,7 +43,7 @@ void GameState::render()
     if (m_window)
     {
         m_window->erase();
-        m_window->addString(2, 1, "Game window");
+        m_board.render(m_gameWindow.get());
         m_window->refresh();
     }
 }
