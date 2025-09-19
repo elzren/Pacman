@@ -10,10 +10,13 @@ void StateManager::pushState(std::unique_ptr<State> state)
     m_states.push_back(std::move(state));
 }
 
-void StateManager::popState()
+void StateManager::popState(int count)
 {
-    if (!m_states.empty())
-        m_states.pop_back();
+    for (int i{0}; i < count; ++i)
+    {
+        if (!m_states.empty())
+            m_states.pop_back();
+    }
 }
 
 State* StateManager::currentState() const

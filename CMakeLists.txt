@@ -23,6 +23,7 @@ set(SOURCES
     src/engine/menu.cpp
     src/game/states/mainMenuState.cpp
     src/game/states/gameState.cpp
+    src/game/states/pauseState.cpp
     src/game/board.cpp
     src/game/boardUtils.cpp
     src/game/player.cpp

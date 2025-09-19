@@ -8,7 +8,10 @@ struct MenuItem
     enum ItemId
     {
         START,
-        EXIT
+        EXIT,
+        RESUME,
+        RESTART,
+        MAIN_MENU
     };
 
     ItemId id{};

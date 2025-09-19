@@ -14,7 +14,7 @@ class StateManager
     StateManager();
 
     void pushState(std::unique_ptr<State> state);
-    void popState();
+    void popState(int count = 1);
 
     State* currentState() const;
 

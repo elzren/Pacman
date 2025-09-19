@@ -23,7 +23,7 @@ void Menu::handleInput(int input)
     }
 }
 
-void Menu::render(Window* win)
+void Menu::render(Window* win, int startX, int startY)
 {
     if (win)
     {
@@ -33,9 +33,9 @@ void Menu::render(Window* win)
         {
             if (i == m_currentIndex)
             {
-                win->addChar(5, i + 2, '>');
+                win->addChar(startX, startY + i, '>');
             }
-            win->addString(7, i + 2, m_items[i].label);
+            win->addString(startX + 2, startY + i, m_items[i].label);
         }
 
         win->refresh();

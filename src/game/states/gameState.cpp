@@ -1,7 +1,7 @@
 #include "game/states/gameState.hpp"
 #include "engine/window.hpp"
 #include "game/boardUtils.hpp"
-#include "game/states/mainMenuState.hpp"
+#include "game/states/pauseState.hpp"
 #include <memory>
 #include <ncurses.h>
 
@@ -11,7 +11,8 @@ GameState::GameState()
     m_window->setTopLabel("Pacman");
 
     m_board.setBoard(BoardUtils::stringVectorToCharVector(BoardUtils::maze));
-    m_player.setPosition({34, 16});
+    m_board.setPlayerInitialPosition({34, 16});
+    m_player.setPosition(m_board.playerInititalPosition());
 
     int terminalWidth, terminalHeight;
     getmaxyx(stdscr, terminalHeight, terminalWidth);
@@ -26,14 +27,9 @@ GameState::~GameState() {}
 
 void GameState::handleInput(StateManager& manager, int input)
 {
-    if (input == 'q')
+    if (input == 27) // ESC key pressed
     {
-        manager.popState();
-    }
-    else if (input == 27) // ESC key pressed
-    {
-        manager.popState();
-        manager.pushState(std::make_unique<MainMenuState>());
+        manager.pushState(std::make_unique<PauseState>());
     }
     else
     {

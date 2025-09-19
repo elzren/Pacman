@@ -78,3 +78,9 @@ bool Board::isWall(Position position) const
     return isVisibleWall(getTile(position)) ||
            isInvisibleWall(getTile(position));
 }
+
+void Board::setPlayerInitialPosition(Position position)
+{
+    m_playerInitialPosition = position;
+}
+Position Board::playerInititalPosition() { return m_playerInitialPosition; }

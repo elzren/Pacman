@@ -13,9 +13,7 @@ MainMenuState::~MainMenuState() {}
 
 void MainMenuState::handleInput(StateManager& manager, int input)
 {
-    if (input == 'q')
-        manager.popState();
-    else if (input == '\n' && m_mainMenu.currentItem())
+    if (input == '\n' && m_mainMenu.currentItem())
     {
         switch (m_mainMenu.currentItem()->id)
         {
@@ -26,6 +24,8 @@ void MainMenuState::handleInput(StateManager& manager, int input)
         case MenuItem::EXIT:
             manager.popState();
             break;
+        default:
+            break;
         }
     }
     else
@@ -34,7 +34,7 @@ void MainMenuState::handleInput(StateManager& manager, int input)
 
 void MainMenuState::update([[maybe_unused]] StateManager& manager) {}
 
-void MainMenuState::render() { m_mainMenu.render(m_window.get()); }
+void MainMenuState::render() { m_mainMenu.render(m_window.get(), 5, 2); }
 
 void MainMenuState::addMainMenuItems()
 {
