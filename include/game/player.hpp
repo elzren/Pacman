@@ -1,6 +1,7 @@
 #ifndef PLAYER_HPP
 #define PLAYER_HPP
 
+#include "engine/direction.hpp"
 #include "engine/position.hpp"
 #include "engine/window.hpp"
 #include "game/board.hpp"
@@ -8,18 +9,9 @@
 
 class Player
 {
-  public:
-    enum Direction
-    {
-        LEFT,
-        RIGHT,
-        UP,
-        DOWN
-    };
-
   private:
     Position m_position{0, 0};
-    Direction m_direction{LEFT};
+    Direction m_direction{Direction::LEFT};
     std::optional<Direction> m_inputDirection{std::nullopt};
 
   public:

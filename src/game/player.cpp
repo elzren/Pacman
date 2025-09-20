@@ -11,16 +11,16 @@ Position Player::getNextPosition(Direction direction) const
 
     switch (direction)
     {
-    case LEFT:
+    case Direction::LEFT:
         --nextPosition.x;
         break;
-    case RIGHT:
+    case Direction::RIGHT:
         ++nextPosition.x;
         break;
-    case UP:
+    case Direction::UP:
         --nextPosition.y;
         break;
-    case DOWN:
+    case Direction::DOWN:
         ++nextPosition.y;
         break;
     }
@@ -32,21 +32,20 @@ char Player::getSymbol() const
 {
     switch (m_direction)
     {
-    case LEFT:
+    case Direction::LEFT:
         return '>';
-    case RIGHT:
+    case Direction::RIGHT:
         return '<';
-    case UP:
+    case Direction::UP:
         return 'v';
-    case DOWN:
+    case Direction::DOWN:
         return '^';
     default:
         return '>';
     }
 }
 
-bool Player::notFacingWall(Player::Direction direction,
-                           const Board& board) const
+bool Player::notFacingWall(Direction direction, const Board& board) const
 {
     return !board.isWall(getNextPosition(direction));
 }
@@ -59,19 +58,19 @@ void Player::handleInput(int input)
     {
     case 'h':
     case KEY_LEFT:
-        m_inputDirection = LEFT;
+        m_inputDirection = Direction::LEFT;
         break;
     case 'l':
     case KEY_RIGHT:
-        m_inputDirection = RIGHT;
+        m_inputDirection = Direction::RIGHT;
         break;
     case 'k':
     case KEY_UP:
-        m_inputDirection = UP;
+        m_inputDirection = Direction::UP;
         break;
     case 'j':
     case KEY_DOWN:
-        m_inputDirection = DOWN;
+        m_inputDirection = Direction::DOWN;
         break;
     }
 }
