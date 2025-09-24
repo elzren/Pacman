@@ -12,6 +12,7 @@ class Board
     int m_height{};
     int m_width{};
     Position m_playerInitialPosition{};
+    Position m_ghostInitialPosition{};
 
   public:
     Board() = default;
@@ -30,7 +31,10 @@ class Board
     bool isWall(Position position) const;
 
     void setPlayerInitialPosition(Position position);
-    Position playerInititalPosition();
+    Position playerInitialPosition() const;
+
+    void setGhostInitialPosition(Position position);
+    Position ghostInitialPosition() const;
 
     void render(Window* window) const;
 };

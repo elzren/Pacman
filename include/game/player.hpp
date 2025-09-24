@@ -13,18 +13,22 @@ class Player
     Position m_position{0, 0};
     Direction m_direction{Direction::LEFT};
     std::optional<Direction> m_inputDirection{std::nullopt};
+    bool alive{true};
 
   public:
     Player() = default;
 
     void setPosition(Position position);
-    void setDirection(Direction direction);
+    void setDirection(const Direction& direction);
 
+    Position getPosition() const;
     char getSymbol() const;
-    Position getNextPosition(Direction direction) const;
-    bool notFacingWall(Direction direction, const Board& board) const;
+    Position getNextPosition(const Direction& direction) const;
+    bool notFacingWall(const Direction& direction, const Board& board) const;
+    bool isDead() const;
 
     void eatItem(Board& board);
+    void kill();
 
     void handleInput(int input);
     void update(Board& board);

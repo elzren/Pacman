@@ -21,12 +21,14 @@ set(SOURCES
     src/engine/stateManager.cpp
     src/engine/window.cpp
     src/engine/menu.cpp
+    src/engine/direction.cpp
     src/game/states/mainMenuState.cpp
     src/game/states/gameState.cpp
     src/game/states/pauseState.cpp
     src/game/board.cpp
     src/game/boardUtils.cpp
     src/game/player.cpp
+    src/game/ghost.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES}) 

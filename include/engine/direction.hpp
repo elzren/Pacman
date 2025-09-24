@@ -1,12 +1,26 @@
 #ifndef DIRECTION_HPP
 #define DIRECTION_HPP
 
-enum class Direction
+class Direction
 {
-    LEFT,
-    RIGHT,
-    UP,
-    DOWN
+  public:
+    enum Type
+    {
+        LEFT,
+        RIGHT,
+        UP,
+        DOWN
+    };
+
+  private:
+    Type m_type{};
+
+  public:
+    Direction(Type type);
+
+    Type type() const;
+    Direction operator-() const;
+    friend bool operator<(const Direction& first, const Direction& second);
 };
 
 #endif

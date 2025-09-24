@@ -1,6 +1,7 @@
 #include "game/states/gameState.hpp"
 #include "engine/window.hpp"
 #include "game/boardUtils.hpp"
+#include "game/states/mainMenuState.hpp"
 #include "game/states/pauseState.hpp"
 #include <memory>
 #include <ncurses.h>
@@ -12,7 +13,10 @@ GameState::GameState()
 
     m_board.setBoard(BoardUtils::stringVectorToCharVector(BoardUtils::maze));
     m_board.setPlayerInitialPosition({34, 16});
-    m_player.setPosition(m_board.playerInititalPosition());
+    m_board.setGhostInitialPosition({34, 9});
+
+    m_player.setPosition(m_board.playerInitialPosition());
+    m_ghost.setPosition(m_board.ghostInitialPosition());
 
     int terminalWidth, terminalHeight;
     getmaxyx(stdscr, terminalHeight, terminalWidth);
@@ -27,7 +31,12 @@ GameState::~GameState() {}
 
 void GameState::handleInput(StateManager& manager, int input)
 {
-    if (input == 27) // ESC key pressed
+    if (m_player.isDead())
+    {
+        manager.popState();
+        manager.pushState(std::make_unique<MainMenuState>());
+    }
+    else if (input == 27) // ESC key pressed
     {
         manager.pushState(std::make_unique<PauseState>());
     }
@@ -40,6 +49,7 @@ void GameState::handleInput(StateManager& manager, int input)
 void GameState::update([[maybe_unused]] StateManager& manager)
 {
     m_player.update(m_board);
+    m_ghost.update(m_board, m_player);
 }
 
 void GameState::render()
@@ -50,6 +60,7 @@ void GameState::render()
 
         m_board.render(m_gameWindow.get());
         m_player.render(m_gameWindow.get());
+        m_ghost.render(m_gameWindow.get());
 
         m_window->refresh();
     }

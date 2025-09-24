@@ -83,4 +83,13 @@ void Board::setPlayerInitialPosition(Position position)
 {
     m_playerInitialPosition = position;
 }
-Position Board::playerInititalPosition() { return m_playerInitialPosition; }
+Position Board::playerInitialPosition() const
+{
+    return m_playerInitialPosition;
+}
+
+void Board::setGhostInitialPosition(Position position)
+{
+    m_ghostInitialPosition = position;
+}
+Position Board::ghostInitialPosition() const { return m_ghostInitialPosition; }

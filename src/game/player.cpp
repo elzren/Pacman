@@ -3,13 +3,16 @@
 #include <ncurses.h>
 
 void Player::setPosition(Position position) { m_position = position; }
-void Player::setDirection(Direction direction) { m_direction = direction; }
+void Player::setDirection(const Direction& direction)
+{
+    m_direction = direction;
+}
 
-Position Player::getNextPosition(Direction direction) const
+Position Player::getNextPosition(const Direction& direction) const
 {
     Position nextPosition{m_position};
 
-    switch (direction)
+    switch (direction.type())
     {
     case Direction::LEFT:
         --nextPosition.x;
@@ -28,9 +31,11 @@ Position Player::getNextPosition(Direction direction) const
     return nextPosition;
 }
 
+Position Player::getPosition() const { return m_position; }
+
 char Player::getSymbol() const
 {
-    switch (m_direction)
+    switch (m_direction.type())
     {
     case Direction::LEFT:
         return '>';
@@ -45,12 +50,16 @@ char Player::getSymbol() const
     }
 }
 
-bool Player::notFacingWall(Direction direction, const Board& board) const
+bool Player::notFacingWall(const Direction& direction, const Board& board) const
 {
     return !board.isWall(getNextPosition(direction));
 }
 
+bool Player::isDead() const { return !alive; }
+
 void Player::eatItem(Board& board) { board.setTile(m_position, ' '); }
+
+void Player::kill() { alive = false; }
 
 void Player::handleInput(int input)
 {
