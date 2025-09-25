@@ -36,6 +36,8 @@ NCurses::NCurses()
         init_pair(BLUE_BLUE, COLOR_BLUE, COLOR_BLUE);
         init_pair(CYAN_CYAN, COLOR_CYAN, COLOR_CYAN);
         init_pair(BLUE_DEFAULT, COLOR_BLUE, -1);
+        init_pair(RED_DEFAULT, COLOR_RED, -1);
+        init_pair(WHITE_DEFAULT, COLOR_WHITE, -1);
     }
 
     clear();   // clears the screen completely on the next call to refresh()

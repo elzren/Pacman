@@ -1,4 +1,5 @@
 #include "game/player.hpp"
+#include "engine/ncurses.hpp"
 #include "engine/position.hpp"
 #include <ncurses.h>
 
@@ -109,6 +110,7 @@ void Player::render(Window* window)
 {
     if (window)
     {
-        window->addChar(m_position.x, m_position.y, getSymbol());
+        window->addChar(m_position.x, m_position.y, getSymbol(),
+                        NCurses::WHITE_DEFAULT);
     }
 }

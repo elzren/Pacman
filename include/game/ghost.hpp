@@ -4,7 +4,6 @@
 #include "engine/direction.hpp"
 #include "engine/position.hpp"
 #include "game/board.hpp"
-#include "game/player.hpp"
 #include <set>
 
 class Ghost
@@ -15,14 +14,17 @@ class Ghost
 
   public:
     Ghost() = default;
+    Ghost(Position position);
 
     void setPosition(Position position);
     void setDirection(const Direction& direction);
 
+    Position getPosition() const;
+
     Position getNextPosition(const Direction& direction) const;
     std::set<Direction> availableDirections(const Board& board) const;
 
-    void update(const Board& board, Player& player);
+    void update(const Board& board);
     void render(Window* window);
 };
 

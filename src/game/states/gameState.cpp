@@ -16,7 +16,6 @@ GameState::GameState()
     m_board.setGhostInitialPosition({34, 9});
 
     m_player.setPosition(m_board.playerInitialPosition());
-    m_ghost.setPosition(m_board.ghostInitialPosition());
 
     int terminalWidth, terminalHeight;
     getmaxyx(stdscr, terminalHeight, terminalWidth);
@@ -49,7 +48,10 @@ void GameState::handleInput(StateManager& manager, int input)
 void GameState::update([[maybe_unused]] StateManager& manager)
 {
     m_player.update(m_board);
-    m_ghost.update(m_board, m_player);
+    m_ghostManager.handleCollision(m_player);
+
+    m_ghostManager.update(m_board);
+    m_ghostManager.handleCollision(m_player);
 }
 
 void GameState::render()
@@ -60,7 +62,7 @@ void GameState::render()
 
         m_board.render(m_gameWindow.get());
         m_player.render(m_gameWindow.get());
-        m_ghost.render(m_gameWindow.get());
+        m_ghostManager.render(m_gameWindow.get());
 
         m_window->refresh();
     }

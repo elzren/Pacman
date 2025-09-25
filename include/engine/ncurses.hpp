@@ -15,6 +15,8 @@ class NCurses
         BLUE_BLUE,
         CYAN_CYAN,
         BLUE_DEFAULT,
+        RED_DEFAULT,
+        WHITE_DEFAULT,
     };
 
   public:

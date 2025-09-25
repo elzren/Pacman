@@ -2,15 +2,18 @@
 #include "engine/direction.hpp"
 #include "engine/ncurses.hpp"
 #include "engine/random.hpp"
-#include "game/player.hpp"
 #include <iterator>
 #include <set>
+
+Ghost::Ghost(Position position) : m_position(position) {}
 
 void Ghost::setPosition(Position position) { m_position = position; }
 void Ghost::setDirection(const Direction& direction)
 {
     m_direction = direction;
 }
+
+Position Ghost::getPosition() const { return m_position; }
 
 Position Ghost::getNextPosition(const Direction& direction) const
 {
@@ -60,14 +63,8 @@ std::set<Direction> Ghost::availableDirections(const Board& board) const
     return directions;
 }
 
-void Ghost::update(const Board& board, Player& player)
+void Ghost::update(const Board& board)
 {
-    if (player.getPosition() == m_position)
-    {
-        player.kill();
-        return;
-    }
-
     std::set<Direction> directions{availableDirections(board)};
 
     if (!directions.empty())

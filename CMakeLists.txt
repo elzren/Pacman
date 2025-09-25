@@ -29,6 +29,7 @@ set(SOURCES
     src/game/boardUtils.cpp
     src/game/player.cpp
     src/game/ghost.cpp
+    src/game/ghostManager.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES}) 
