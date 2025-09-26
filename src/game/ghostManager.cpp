@@ -4,12 +4,17 @@
 
 GhostManager::GhostManager() { m_ghosts.reserve(m_maxGhosts); }
 
-void GhostManager::handleCollision(Player& player)
+void GhostManager::handleCollision(Player& player, const Board& board)
 {
     for (const auto& ghost : m_ghosts)
     {
         if (ghost.getPosition() == player.getPosition())
+        {
             player.kill();
+            player.setPosition(board.playerInitialPosition());
+            player.setDirection(board.playerInitialDirection());
+            resetGhosts();
+        }
     }
 }
 
@@ -19,6 +24,12 @@ void GhostManager::spawnGhost(Position position)
     {
         m_ghosts.emplace_back(position);
     }
+}
+
+void GhostManager::resetGhosts()
+{
+    m_ghosts.clear();
+    m_frameCount = 0;
 }
 
 void GhostManager::update(const Board& board)

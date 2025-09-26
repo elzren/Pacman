@@ -17,8 +17,9 @@ class GhostManager
   public:
     GhostManager();
 
-    void handleCollision(Player& player);
+    void handleCollision(Player& player, const Board& board);
     void spawnGhost(Position position);
+    void resetGhosts();
 
     void update(const Board& board);
     void render(Window* window);

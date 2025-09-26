@@ -33,6 +33,9 @@ class Window
 
     void setTopLabel(std::string_view label);
     void setBottomLabel(std::string_view label);
+
+    int getWidth() const;
+    int getHeight() const;
 };
 
 #endif

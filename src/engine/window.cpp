@@ -55,3 +55,7 @@ void Window::addString(int x, int y, const std::string& str)
 
 void Window::setTopLabel(std::string_view label) { m_topLabel = label; }
 void Window::setBottomLabel(std::string_view label) { m_bottomLabel = label; }
+
+int Window::getWidth() const { return m_width; }
+
+int Window::getHeight() const { return m_height; }

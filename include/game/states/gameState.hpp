@@ -22,6 +22,10 @@ class GameState : public State
     GameState();
     virtual ~GameState();
 
+    void initializeBoard();
+    void initializePlayer();
+    void restart();
+
     void handleInput(StateManager& manager, int input) override;
     void update(StateManager& manager) override;
     void render() override;

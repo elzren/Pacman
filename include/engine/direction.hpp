@@ -16,6 +16,7 @@ class Direction
     Type m_type{};
 
   public:
+    Direction() = default;
     Direction(Type type);
 
     Type type() const;

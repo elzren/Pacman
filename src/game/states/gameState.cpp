@@ -1,24 +1,23 @@
 #include "game/states/gameState.hpp"
+#include "engine/direction.hpp"
 #include "engine/window.hpp"
 #include "game/boardUtils.hpp"
 #include "game/states/mainMenuState.hpp"
 #include "game/states/pauseState.hpp"
 #include <memory>
 #include <ncurses.h>
+#include <string>
 
 GameState::GameState()
 {
-    m_window = std::make_unique<Window>(0, 0, 0, 0);
-    m_window->setTopLabel("Pacman");
-
-    m_board.setBoard(BoardUtils::stringVectorToCharVector(BoardUtils::maze));
-    m_board.setPlayerInitialPosition({34, 16});
-    m_board.setGhostInitialPosition({34, 9});
-
-    m_player.setPosition(m_board.playerInitialPosition());
-
     int terminalWidth, terminalHeight;
     getmaxyx(stdscr, terminalHeight, terminalWidth);
+
+    m_window = std::make_unique<Window>(terminalWidth, terminalHeight, 0, 0);
+    m_window->setTopLabel("Pacman");
+
+    initializeBoard();
+    initializePlayer();
 
     m_gameWindow = std::make_unique<Window>(
         m_window.get(), m_board.getWidth(), m_board.getHeight(),
@@ -28,36 +27,66 @@ GameState::GameState()
 
 GameState::~GameState() {}
 
+void GameState::initializeBoard()
+{
+    m_board.setBoard(BoardUtils::stringVectorToCharVector(BoardUtils::maze));
+    m_board.setPlayerInitialPosition({34, 16});
+    m_board.setGhostInitialPosition({34, 9});
+    m_board.setPlayerInitialDirection(Direction::LEFT);
+}
+
+void GameState::initializePlayer()
+{
+    m_player.setPosition(m_board.playerInitialPosition());
+    m_player.setDirection(m_board.playerInitialDirection());
+}
+
+void GameState::restart()
+{
+    initializeBoard();
+    initializePlayer();
+    m_ghostManager.resetGhosts();
+}
+
 void GameState::handleInput(StateManager& manager, int input)
 {
-    if (m_player.isDead())
-    {
-        manager.popState();
-        manager.pushState(std::make_unique<MainMenuState>());
-    }
-    else if (input == 27) // ESC key pressed
+    if (input == 27) // ESC key pressed
     {
         manager.pushState(std::make_unique<PauseState>());
     }
-    else
-    {
-        m_player.handleInput(input);
-    }
+
+    m_player.handleInput(input);
 }
 
 void GameState::update([[maybe_unused]] StateManager& manager)
 {
+    if (m_player.lives() == 0)
+    {
+        manager.popState();
+        manager.pushState(std::make_unique<MainMenuState>());
+        return;
+    }
+
+    if (m_player.eatenAllDots(m_board.dots()))
+    {
+        restart();
+    }
+
     m_player.update(m_board);
-    m_ghostManager.handleCollision(m_player);
+    m_ghostManager.handleCollision(m_player, m_board);
 
     m_ghostManager.update(m_board);
-    m_ghostManager.handleCollision(m_player);
+    m_ghostManager.handleCollision(m_player, m_board);
 }
 
 void GameState::render()
 {
     if (m_window)
     {
+        m_window->setBottomLabel(
+            " " + std::string(m_player.lives(), '>') +
+            " ]--[Score: " + std::to_string(m_player.score()));
+
         m_window->erase();
 
         m_board.render(m_gameWindow.get());

@@ -10,10 +10,12 @@
 class Player
 {
   private:
-    Position m_position{0, 0};
-    Direction m_direction{Direction::LEFT};
+    Position m_position{};
+    Direction m_direction{};
     std::optional<Direction> m_inputDirection{std::nullopt};
-    bool alive{true};
+    int m_lives{3};
+    int m_dotsEaten{0};
+    int m_score{0};
 
   public:
     Player() = default;
@@ -25,9 +27,11 @@ class Player
     char getSymbol() const;
     Position getNextPosition(const Direction& direction) const;
     bool notFacingWall(const Direction& direction, const Board& board) const;
-    bool isDead() const;
+    int lives() const;
+    int score() const;
+    bool eatenAllDots(int totalDots) const;
 
-    void eatItem(Board& board);
+    void eatDot(Board& board);
     void kill();
 
     void handleInput(int input);

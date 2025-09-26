@@ -56,11 +56,32 @@ bool Player::notFacingWall(const Direction& direction, const Board& board) const
     return !board.isWall(getNextPosition(direction));
 }
 
-bool Player::isDead() const { return !alive; }
+int Player::lives() const { return m_lives; }
 
-void Player::eatItem(Board& board) { board.setTile(m_position, ' '); }
+int Player::score() const { return m_score; }
 
-void Player::kill() { alive = false; }
+bool Player::eatenAllDots(int totalDots) const
+{
+    return m_dotsEaten == totalDots;
+}
+
+void Player::eatDot(Board& board)
+{
+    if (board.isSmallDot(m_position))
+    {
+        ++m_dotsEaten;
+        board.setTile(m_position, ' ');
+        m_score += 10;
+    }
+    else if (board.isBigDot(m_position))
+    {
+        ++m_dotsEaten;
+        board.setTile(m_position, ' ');
+        m_score += 50;
+    }
+}
+
+void Player::kill() { --m_lives; }
 
 void Player::handleInput(int input)
 {
@@ -91,19 +112,19 @@ void Player::update(Board& board)
     {
         Position nextPosition{getNextPosition(*m_inputDirection)};
 
-        eatItem(board);
-
         m_position = nextPosition;
         m_direction = *m_inputDirection;
         m_inputDirection = std::nullopt;
+
+        eatDot(board);
     }
     else if (notFacingWall(m_direction, board))
     {
         Position nextPosition{getNextPosition(m_direction)};
 
-        eatItem(board);
-
         m_position = nextPosition;
+
+        eatDot(board);
     }
 }
 void Player::render(Window* window)

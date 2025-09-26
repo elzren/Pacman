@@ -14,7 +14,12 @@ void Board::setBoard(const std::vector<std::vector<char>>& board)
         for (size_t column{0}; column < board[row].size(); ++column)
         {
             if (static_cast<int>(column) < m_width)
+            {
                 m_board[row][column] = board[row][column];
+
+                if (isDot(m_board[row][column]))
+                    ++m_dots;
+            }
         }
     }
 }
@@ -67,12 +72,32 @@ void Board::render(Window* window) const
     }
 }
 
+bool Board::isSmallDot(char ch) const { return ch == '.'; }
+bool Board::isSmallDot(Position position) const
+{
+    return isSmallDot(getTile(position));
+}
+
+bool Board::isBigDot(char ch) const { return ch == '*'; }
+bool Board::isBigDot(Position position) const
+{
+    return isBigDot(getTile(position));
+}
+
+bool Board::isDot(char ch) const { return isSmallDot(ch) || isBigDot(ch); }
+bool Board::isDot(Position position) const
+{
+    return isSmallDot(position) || isBigDot(position);
+}
+
 bool Board::isVisibleWall(char ch) const { return ch == '#'; }
 bool Board::isInvisibleWall(char ch) const { return ch == 'x'; }
+
 bool Board::isWall(char ch) const
 {
     return isVisibleWall(ch) || isInvisibleWall(ch);
 }
+
 bool Board::isWall(Position position) const
 {
     return isVisibleWall(getTile(position)) ||
@@ -83,6 +108,7 @@ void Board::setPlayerInitialPosition(Position position)
 {
     m_playerInitialPosition = position;
 }
+
 Position Board::playerInitialPosition() const
 {
     return m_playerInitialPosition;
@@ -92,4 +118,17 @@ void Board::setGhostInitialPosition(Position position)
 {
     m_ghostInitialPosition = position;
 }
+
 Position Board::ghostInitialPosition() const { return m_ghostInitialPosition; }
+
+void Board::setPlayerInitialDirection(const Direction& direction)
+{
+    m_playerInitialDirection = direction;
+}
+
+const Direction& Board::playerInitialDirection() const
+{
+    return m_playerInitialDirection;
+}
+
+int Board::dots() const { return m_dots; }
