@@ -12,7 +12,7 @@ class GhostManager
     std::vector<Ghost> m_ghosts{};
     size_t m_maxGhosts{4};
     int m_spawnTimeout{60};
-    int m_frameCount{0};
+    int m_ghostMoves{0};
 
   public:
     GhostManager();
@@ -20,6 +20,7 @@ class GhostManager
     void handleCollision(Player& player, const Board& board);
     void spawnGhost(Position position);
     void resetGhosts();
+    void incrementGhostMoves();
 
     void update(const Board& board);
     void render(Window* window);

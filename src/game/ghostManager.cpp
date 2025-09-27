@@ -23,7 +23,7 @@ void GhostManager::handleCollision(Player& player, const Board& board)
 
 void GhostManager::spawnGhost(Position position)
 {
-    if (m_ghosts.size() < m_maxGhosts && m_frameCount % m_spawnTimeout == 0)
+    if (m_ghosts.size() < m_maxGhosts && m_ghostMoves % m_spawnTimeout == 0)
     {
         m_ghosts.emplace_back(position);
     }
@@ -32,7 +32,16 @@ void GhostManager::spawnGhost(Position position)
 void GhostManager::resetGhosts()
 {
     m_ghosts.clear();
-    m_frameCount = 0;
+    m_ghostMoves = 0;
+}
+
+void GhostManager::incrementGhostMoves()
+{
+    ++m_ghostMoves;
+    if (m_ghostMoves >= 1000000)
+    {
+        m_ghostMoves = 0;
+    }
 }
 
 void GhostManager::update(const Board& board)
@@ -44,7 +53,7 @@ void GhostManager::update(const Board& board)
         ghost.update(board);
     }
 
-    ++m_frameCount;
+    incrementGhostMoves();
 }
 
 void GhostManager::render(Window* window)
@@ -56,7 +65,7 @@ void GhostManager::render(Window* window)
             ghost.render(window);
         }
 
-        if (m_frameCount % 8 > 3)
+        if (m_ghostMoves % 8 > 3)
         {
             window->addChar(34, 10, 'O', NCurses::RED_DEFAULT);
         }

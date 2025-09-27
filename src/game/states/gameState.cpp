@@ -48,6 +48,34 @@ void GameState::restart()
     ++m_level;
 }
 
+int GameState::frameDelay() const
+{
+    switch (m_level)
+    {
+    case 1:
+        return 10;
+    case 2:
+        return 9;
+    case 3:
+        return 8;
+    case 4:
+        return 7;
+    case 5:
+        return 5;
+    default:
+        return 4;
+    }
+}
+
+void GameState::incrementFrameCount()
+{
+    ++frameCount;
+    if (frameCount >= 1000000)
+    {
+        frameCount = 0;
+    }
+}
+
 void GameState::handleInput(StateManager& manager, int input)
 {
     if (input == 27) // ESC key pressed
@@ -72,11 +100,19 @@ void GameState::update([[maybe_unused]] StateManager& manager)
         restart();
     }
 
-    m_player.update(m_board);
-    m_ghostManager.handleCollision(m_player, m_board);
+    if (frameCount % frameDelay() == 0)
+    {
+        m_player.update(m_board);
+        m_ghostManager.handleCollision(m_player, m_board);
+    }
 
-    m_ghostManager.update(m_board);
-    m_ghostManager.handleCollision(m_player, m_board);
+    if (frameCount % frameDelay() == 0)
+    {
+        m_ghostManager.update(m_board);
+        m_ghostManager.handleCollision(m_player, m_board);
+    }
+
+    incrementFrameCount();
 }
 
 void GameState::render()

@@ -18,6 +18,7 @@ class GameState : public State
     Player m_player{};
     GhostManager m_ghostManager{};
     int m_level{1};
+    int frameCount{};
 
   public:
     GameState();
@@ -26,6 +27,8 @@ class GameState : public State
     void initializeBoard();
     void initializePlayer();
     void restart();
+    int frameDelay() const;
+    void incrementFrameCount();
 
     void handleInput(StateManager& manager, int input) override;
     void update(StateManager& manager) override;
