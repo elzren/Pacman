@@ -1,18 +1,22 @@
 #include "game/states/pauseState.hpp"
 #include "game/states/gameState.hpp"
 #include "game/states/mainMenuState.hpp"
+#include <string_view>
 
-PauseState::PauseState()
+PauseState::PauseState(bool resume, std::string_view label)
 {
+
+    addPauseMenuItems(resume);
+
+    m_height = m_pauseMenu.itemsCount() + 2;
+
     int terminalWidth, terminalHeight;
     getmaxyx(stdscr, terminalHeight, terminalWidth);
 
     m_window = std::make_unique<Window>(m_width, m_height,
                                         (terminalWidth - m_width) / 2,
                                         (terminalHeight - m_height) / 2);
-    m_window->setTopLabel("Paused");
-
-    addPauseMenuItems();
+    m_window->setTopLabel(label);
 }
 
 PauseState::~PauseState() {}
@@ -53,12 +57,16 @@ void PauseState::update([[maybe_unused]] StateManager& manager) {}
 
 void PauseState::render() { m_pauseMenu.render(m_window.get()); }
 
-void PauseState::addPauseMenuItems()
+void PauseState::addPauseMenuItems(bool resume)
 {
-    m_pauseMenu.addItem(MenuItem{
-        MenuItem::RESUME,
-        "Resume",
-    });
+    if (resume)
+    {
+        m_pauseMenu.addItem(MenuItem{
+            MenuItem::RESUME,
+            "Resume",
+        });
+    }
+
     m_pauseMenu.addItem(MenuItem{
         MenuItem::RESTART,
         "Restart",

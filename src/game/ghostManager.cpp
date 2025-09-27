@@ -11,9 +11,12 @@ void GhostManager::handleCollision(Player& player, const Board& board)
         if (ghost.getPosition() == player.getPosition())
         {
             player.kill();
-            player.setPosition(board.playerInitialPosition());
-            player.setDirection(board.playerInitialDirection());
-            resetGhosts();
+            if (player.lives())
+            {
+                player.setPosition(board.playerInitialPosition());
+                player.setDirection(board.playerInitialDirection());
+                resetGhosts();
+            }
         }
     }
 }

@@ -17,6 +17,7 @@ class GameState : public State
     Board m_board{};
     Player m_player{};
     GhostManager m_ghostManager{};
+    int m_level{1};
 
   public:
     GameState();

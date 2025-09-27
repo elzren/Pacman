@@ -2,7 +2,6 @@
 #include "engine/direction.hpp"
 #include "engine/window.hpp"
 #include "game/boardUtils.hpp"
-#include "game/states/mainMenuState.hpp"
 #include "game/states/pauseState.hpp"
 #include <memory>
 #include <ncurses.h>
@@ -46,6 +45,7 @@ void GameState::restart()
     initializeBoard();
     initializePlayer();
     m_ghostManager.resetGhosts();
+    ++m_level;
 }
 
 void GameState::handleInput(StateManager& manager, int input)
@@ -63,7 +63,7 @@ void GameState::update([[maybe_unused]] StateManager& manager)
     if (m_player.lives() == 0)
     {
         manager.popState();
-        manager.pushState(std::make_unique<MainMenuState>());
+        manager.pushState(std::make_unique<PauseState>(false, "Game Over"));
         return;
     }
 
@@ -85,7 +85,8 @@ void GameState::render()
     {
         m_window->setBottomLabel(
             " " + std::string(m_player.lives(), '>') +
-            " ]--[Score: " + std::to_string(m_player.score()));
+            " ]--[Level: " + std::to_string(m_level) +
+            "]--[Score: " + std::to_string(m_player.score()));
 
         m_window->erase();
 

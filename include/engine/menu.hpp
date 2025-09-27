@@ -16,13 +16,15 @@ class Menu
     Menu() = default;
 
     void addItem(const MenuItem& item);
-    MenuItem* currentItem();
+    const MenuItem* currentItem() const;
 
     void handleInput(int input);
     void render(Window* win, int startX = 1, int startY = 1);
 
     void moveUp();
     void moveDown();
+
+    int itemsCount() const;
 };
 
 #endif

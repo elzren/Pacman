@@ -6,7 +6,7 @@ void Menu::addItem(const MenuItem& item)
     m_items.push_back(item);
     m_currentItem = &m_items[m_currentIndex];
 }
-MenuItem* Menu::currentItem() { return m_currentItem; }
+const MenuItem* Menu::currentItem() const { return m_currentItem; }
 
 void Menu::handleInput(int input)
 {
@@ -59,3 +59,5 @@ void Menu::moveDown()
         m_currentItem = &m_items[m_currentIndex];
     }
 };
+
+int Menu::itemsCount() const { return m_items.size(); }
