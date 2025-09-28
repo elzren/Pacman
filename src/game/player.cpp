@@ -1,6 +1,7 @@
 #include "game/player.hpp"
 #include "engine/ncurses.hpp"
 #include "engine/position.hpp"
+#include "game/ghostManager.hpp"
 #include <ncurses.h>
 
 void Player::setPosition(Position position) { m_position = position; }
@@ -65,23 +66,27 @@ bool Player::eatenAllDots(int totalDots) const
     return m_dotsEaten == totalDots;
 }
 
-void Player::eatDot(Board& board)
+void Player::eatDot(Board& board, GhostManager& ghostMgr)
 {
     if (board.isSmallDot(m_position))
     {
         ++m_dotsEaten;
         board.setTile(m_position, ' ');
-        m_score += 10;
+        incrementScore(10);
     }
     else if (board.isBigDot(m_position))
     {
         ++m_dotsEaten;
         board.setTile(m_position, ' ');
-        m_score += 50;
+        incrementScore(50);
+
+        ghostMgr.setFrightenedMode();
     }
 }
 
 void Player::kill() { --m_lives; }
+
+void Player::incrementScore(int score) { m_score += score; }
 
 void Player::handleInput(int input)
 {
@@ -115,18 +120,15 @@ void Player::update(Board& board)
         m_position = nextPosition;
         m_direction = *m_inputDirection;
         m_inputDirection = std::nullopt;
-
-        eatDot(board);
     }
     else if (notFacingWall(m_direction, board))
     {
         Position nextPosition{getNextPosition(m_direction)};
 
         m_position = nextPosition;
-
-        eatDot(board);
     }
 }
+
 void Player::render(Window* window)
 {
     if (window)

@@ -30,7 +30,7 @@ void GameState::initializeBoard()
 {
     m_board.setBoard(BoardUtils::stringVectorToCharVector(BoardUtils::maze));
     m_board.setPlayerInitialPosition({34, 16});
-    m_board.setGhostInitialPosition({34, 9});
+    m_board.setGhostInitialPosition({34, 8});
     m_board.setPlayerInitialDirection(Direction::LEFT);
 }
 
@@ -103,11 +103,9 @@ void GameState::update([[maybe_unused]] StateManager& manager)
     if (frameCount % frameDelay() == 0)
     {
         m_player.update(m_board);
+        m_player.eatDot(m_board, m_ghostManager);
         m_ghostManager.handleCollision(m_player, m_board);
-    }
 
-    if (frameCount % frameDelay() == 0)
-    {
         m_ghostManager.update(m_board);
         m_ghostManager.handleCollision(m_player, m_board);
     }

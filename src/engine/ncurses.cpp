@@ -29,15 +29,14 @@ NCurses::NCurses()
         start_color();
         use_default_colors(); // Allow use of -1 for default colors
 
-        init_pair(BLUE_BLACK, COLOR_BLUE, COLOR_BLACK);
-        init_pair(GREEN_BLACK, COLOR_GREEN, COLOR_BLACK);
-        init_pair(RED_BLACK, COLOR_RED, COLOR_BLACK);
-        init_pair(WHITE_BLACK, COLOR_WHITE, COLOR_BLACK);
+        init_pair(BLUE_DEFAULT, COLOR_BLUE, -1);
+        init_pair(GREEN_DEFAULT, COLOR_GREEN, -1);
+        init_pair(RED_DEFAULT, COLOR_RED, -1);
+        init_pair(MAGENTA_DEFAULT, COLOR_MAGENTA, -1);
+        init_pair(YELLOW_DEFAULT, COLOR_YELLOW, -1);
+        init_pair(WHITE_DEFAULT, COLOR_WHITE, -1);
         init_pair(BLUE_BLUE, COLOR_BLUE, COLOR_BLUE);
         init_pair(CYAN_CYAN, COLOR_CYAN, COLOR_CYAN);
-        init_pair(BLUE_DEFAULT, COLOR_BLUE, -1);
-        init_pair(RED_DEFAULT, COLOR_RED, -1);
-        init_pair(WHITE_DEFAULT, COLOR_WHITE, -1);
     }
 
     clear();   // clears the screen completely on the next call to refresh()

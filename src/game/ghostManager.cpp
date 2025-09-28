@@ -6,16 +6,25 @@ GhostManager::GhostManager() { m_ghosts.reserve(m_maxGhosts); }
 
 void GhostManager::handleCollision(Player& player, const Board& board)
 {
-    for (const auto& ghost : m_ghosts)
+    for (auto& ghost : m_ghosts)
     {
         if (ghost.getPosition() == player.getPosition())
         {
-            player.kill();
-            if (player.lives())
+            if (ghost.isFrightened())
             {
-                player.setPosition(board.playerInitialPosition());
-                player.setDirection(board.playerInitialDirection());
-                resetGhosts();
+                ghost.setPosition(board.ghostInitialPosition());
+                ghost.makeUnfrightened();
+                player.incrementScore(100);
+            }
+            else
+            {
+                player.kill();
+                if (player.lives())
+                {
+                    player.setPosition(board.playerInitialPosition());
+                    player.setDirection(board.playerInitialDirection());
+                    resetGhosts();
+                }
             }
         }
     }
@@ -44,16 +53,51 @@ void GhostManager::incrementGhostMoves()
     }
 }
 
+void GhostManager::setFrightenedMode()
+{
+    m_frightenedMode = true;
+    m_frightenedTimer = 0;
+
+    for (auto& ghost : m_ghosts)
+    {
+        ghost.makeFrightened();
+    }
+}
+
+void GhostManager::unsetFrightenedMode()
+{
+    m_frightenedMode = false;
+
+    for (auto& ghost : m_ghosts)
+    {
+        ghost.makeUnfrightened();
+    }
+}
+
 void GhostManager::update(const Board& board)
 {
     spawnGhost(board.ghostInitialPosition());
 
     for (auto& ghost : m_ghosts)
     {
-        ghost.update(board);
+        // if frightened, slow down the ghost
+        if (!ghost.isFrightened() || m_frightenedTimer % 3 != 0)
+        {
+            ghost.update(board);
+        }
     }
 
     incrementGhostMoves();
+
+    if (m_frightenedMode)
+    {
+        ++m_frightenedTimer;
+
+        if (m_frightenedTimer >= m_frightenedDuration)
+        {
+            unsetFrightenedMode();
+        }
+    }
 }
 
 void GhostManager::render(Window* window)
@@ -62,7 +106,22 @@ void GhostManager::render(Window* window)
     {
         for (auto& ghost : m_ghosts)
         {
-            ghost.render(window);
+            if (ghost.isFrightened())
+            {
+                if (m_frightenedTimer > m_frightenedDuration - 10 &&
+                    m_frightenedTimer % 2 == 0)
+                {
+                    ghost.render(window);
+                }
+                else
+                {
+                    ghost.render(window, NCurses::BLUE_DEFAULT);
+                }
+            }
+            else
+            {
+                ghost.render(window);
+            }
         }
 
         if (m_ghostMoves % 8 > 3)

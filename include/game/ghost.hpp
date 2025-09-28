@@ -2,6 +2,7 @@
 #define GHOST_HPP
 
 #include "engine/direction.hpp"
+#include "engine/ncurses.hpp"
 #include "engine/position.hpp"
 #include "game/board.hpp"
 #include <set>
@@ -11,6 +12,7 @@ class Ghost
   private:
     Position m_position{0, 0};
     Direction m_direction{Direction::UP};
+    bool m_frightened{false};
 
   public:
     Ghost() = default;
@@ -18,14 +20,18 @@ class Ghost
 
     void setPosition(Position position);
     void setDirection(const Direction& direction);
+    void makeFrightened();
+    void makeUnfrightened();
 
     Position getPosition() const;
+    bool isFrightened() const;
 
     Position getNextPosition(const Direction& direction) const;
     std::set<Direction> availableDirections(const Board& board) const;
 
     void update(const Board& board);
     void render(Window* window);
+    void render(Window* window, NCurses::ColorPair colorPair);
 };
 
 #endif

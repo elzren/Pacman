@@ -7,6 +7,8 @@
 #include "game/board.hpp"
 #include <optional>
 
+class GhostManager;
+
 class Player
 {
   private:
@@ -31,8 +33,9 @@ class Player
     int score() const;
     bool eatenAllDots(int totalDots) const;
 
-    void eatDot(Board& board);
+    void eatDot(Board& board, GhostManager& ghostMgr);
     void kill();
+    void incrementScore(int score);
 
     void handleInput(int input);
     void update(Board& board);

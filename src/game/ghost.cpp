@@ -13,7 +13,12 @@ void Ghost::setDirection(const Direction& direction)
     m_direction = direction;
 }
 
+void Ghost::makeFrightened() { m_frightened = true; }
+void Ghost::makeUnfrightened() { m_frightened = false; }
+
 Position Ghost::getPosition() const { return m_position; }
+
+bool Ghost::isFrightened() const { return m_frightened; }
 
 Position Ghost::getNextPosition(const Direction& direction) const
 {
@@ -85,6 +90,15 @@ void Ghost::render(Window* window)
 {
     if (window)
     {
-        window->addChar(m_position.x, m_position.y, 'M', NCurses::BLUE_DEFAULT);
+        window->addChar(m_position.x, m_position.y, 'M',
+                        NCurses::GREEN_DEFAULT);
+    }
+}
+
+void Ghost::render(Window* window, NCurses::ColorPair colorPair)
+{
+    if (window)
+    {
+        window->addChar(m_position.x, m_position.y, 'M', colorPair);
     }
 }
