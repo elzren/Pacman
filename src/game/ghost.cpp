@@ -2,10 +2,11 @@
 #include "engine/direction.hpp"
 #include "engine/ncurses.hpp"
 #include "engine/random.hpp"
+#include "game/player.hpp"
 #include <iterator>
 #include <set>
 
-Ghost::Ghost(Position position) : m_position(position) {}
+Ghost::Ghost(Position position) : m_position{position} {}
 
 void Ghost::setPosition(Position position) { m_position = position; }
 void Ghost::setDirection(const Direction& direction)
@@ -64,26 +65,37 @@ std::set<Direction> Ghost::availableDirections(const Board& board) const
         directions.insert(Direction{Direction::DOWN});
     }
 
-    directions.erase(-m_direction); // Remove opposite of current direction
+    eraseDirection(-m_direction,
+                   directions); // Remove opposite of current direction
     return directions;
 }
 
-void Ghost::update(const Board& board)
+void Ghost::move(const std::set<Direction>& availableDirections)
 {
-    std::set<Direction> directions{availableDirections(board)};
-
-    if (!directions.empty())
+    if (!availableDirections.empty())
     {
-        auto directionIt = directions.begin();
-        std::advance(directionIt, Random::get(0, directions.size() - 1));
+        auto directionIt = availableDirections.begin();
+        std::advance(directionIt,
+                     Random::get(0, availableDirections.size() - 1));
 
         m_direction = *directionIt;
+        m_position = getNextPosition(m_direction);
     }
-    else
+}
+
+void Ghost::eraseDirection(const Direction& direction,
+                           std::set<Direction>& directions) const
+{
+    if (directions.size() > 1)
     {
-        m_direction = -m_direction;
+        directions.erase(direction);
     }
-    m_position = getNextPosition(m_direction);
+}
+
+void Ghost::update(const Board& board, [[maybe_unused]] const Player& player)
+{
+    std::set<Direction> availDirections{availableDirections(board)};
+    move(availDirections);
 }
 
 void Ghost::render(Window* window)

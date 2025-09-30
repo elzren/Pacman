@@ -30,6 +30,8 @@ set(SOURCES
     src/game/player.cpp
     src/game/ghost.cpp
     src/game/ghostManager.cpp
+    src/game/oneEyedGhost.cpp
+    src/game/chaserGhost.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES}) 

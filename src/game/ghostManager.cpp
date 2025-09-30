@@ -1,6 +1,11 @@
 #include "game/ghostManager.hpp"
 #include "engine/ncurses.hpp"
 #include "engine/window.hpp"
+#include "game/chaserGhost.hpp"
+#include "game/ghost.hpp"
+#include "game/oneEyedGhost.hpp"
+#include "game/player.hpp"
+#include <memory>
 
 GhostManager::GhostManager() { m_ghosts.reserve(m_maxGhosts); }
 
@@ -8,12 +13,12 @@ void GhostManager::handleCollision(Player& player, const Board& board)
 {
     for (auto& ghost : m_ghosts)
     {
-        if (ghost.getPosition() == player.getPosition())
+        if (ghost->getPosition() == player.getPosition())
         {
-            if (ghost.isFrightened())
+            if (ghost->isFrightened())
             {
-                ghost.setPosition(board.ghostInitialPosition());
-                ghost.makeUnfrightened();
+                ghost->setPosition(board.ghostInitialPosition());
+                ghost->makeUnfrightened();
                 player.incrementScore(100);
             }
             else
@@ -34,7 +39,18 @@ void GhostManager::spawnGhost(Position position)
 {
     if (m_ghosts.size() < m_maxGhosts && m_ghostMoves % m_spawnTimeout == 0)
     {
-        m_ghosts.emplace_back(position);
+        if (m_ghosts.size() == m_maxGhosts - 1)
+        {
+            m_ghosts.emplace_back(std::make_unique<ChaserGhost>(position));
+        }
+        else if (m_ghosts.size() == m_maxGhosts - 2)
+        {
+            m_ghosts.emplace_back(std::make_unique<OneEyedGhost>(position));
+        }
+        else
+        {
+            m_ghosts.emplace_back(std::make_unique<Ghost>(position));
+        }
     }
 }
 
@@ -60,7 +76,7 @@ void GhostManager::setFrightenedMode()
 
     for (auto& ghost : m_ghosts)
     {
-        ghost.makeFrightened();
+        ghost->makeFrightened();
     }
 }
 
@@ -70,20 +86,20 @@ void GhostManager::unsetFrightenedMode()
 
     for (auto& ghost : m_ghosts)
     {
-        ghost.makeUnfrightened();
+        ghost->makeUnfrightened();
     }
 }
 
-void GhostManager::update(const Board& board)
+void GhostManager::update(const Board& board, const Player& player)
 {
     spawnGhost(board.ghostInitialPosition());
 
     for (auto& ghost : m_ghosts)
     {
         // if frightened, slow down the ghost
-        if (!ghost.isFrightened() || m_frightenedTimer % 3 != 0)
+        if (!ghost->isFrightened() || m_frightenedTimer % 3 != 0)
         {
-            ghost.update(board);
+            ghost->update(board, player);
         }
     }
 
@@ -106,21 +122,21 @@ void GhostManager::render(Window* window)
     {
         for (auto& ghost : m_ghosts)
         {
-            if (ghost.isFrightened())
+            if (ghost->isFrightened())
             {
                 if (m_frightenedTimer > m_frightenedDuration - 10 &&
                     m_frightenedTimer % 2 == 0)
                 {
-                    ghost.render(window);
+                    ghost->render(window);
                 }
                 else
                 {
-                    ghost.render(window, NCurses::BLUE_DEFAULT);
+                    ghost->render(window, NCurses::BLUE_DEFAULT);
                 }
             }
             else
             {
-                ghost.render(window);
+                ghost->render(window);
             }
         }
 

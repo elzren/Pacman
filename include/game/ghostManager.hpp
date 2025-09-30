@@ -4,15 +4,16 @@
 #include "engine/window.hpp"
 #include "game/ghost.hpp"
 #include "game/player.hpp"
+#include <memory>
 #include <vector>
 
 class GhostManager
 {
   private:
-    std::vector<Ghost> m_ghosts{};
+    std::vector<std::unique_ptr<Ghost>> m_ghosts{};
     size_t m_maxGhosts{4};
 
-    int m_spawnTimeout{20};
+    int m_spawnTimeout{40};
     int m_ghostMoves{0};
 
     bool m_frightenedMode{false};
@@ -29,7 +30,7 @@ class GhostManager
     void setFrightenedMode();
     void unsetFrightenedMode();
 
-    void update(const Board& board);
+    void update(const Board& board, const Player& player);
     void render(Window* window);
 };
 

@@ -106,7 +106,7 @@ void GameState::update([[maybe_unused]] StateManager& manager)
         m_player.eatDot(m_board, m_ghostManager);
         m_ghostManager.handleCollision(m_player, m_board);
 
-        m_ghostManager.update(m_board);
+        m_ghostManager.update(m_board, m_player);
         m_ghostManager.handleCollision(m_player, m_board);
     }
 
