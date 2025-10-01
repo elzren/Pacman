@@ -131,9 +131,9 @@ void Player::update(Board& board)
 
 void Player::render(Window* window)
 {
-    if (window)
+    if (window && m_lives > 0)
     {
         window->addChar(m_position.x, m_position.y, getSymbol(),
-                        NCurses::WHITE_DEFAULT);
+                        NCurses::MAGENTA_DEFAULT);
     }
 }

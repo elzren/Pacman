@@ -10,6 +10,14 @@ MainMenuState::MainMenuState(Difficulty difficulty) : m_difficulty{difficulty}
 
     addMainMenuItems();
     addDifficultyMenuItems();
+
+    int terminalWidth, terminalHeight;
+    getmaxyx(stdscr, terminalHeight, terminalWidth);
+
+    m_menuWindow = std::make_unique<Window>(
+        m_window.get(), m_menuWidth, m_mainMenu.itemsCount(),
+        (terminalWidth - m_menuWidth) / 2,
+        (terminalHeight - m_mainMenu.itemsCount()) / 2);
 }
 
 MainMenuState::~MainMenuState() {}
@@ -74,16 +82,19 @@ void MainMenuState::update([[maybe_unused]] StateManager& manager) {}
 
 void MainMenuState::render()
 {
+    m_window->erase();
 
     if (m_difficultyMenuOpen)
     {
-        m_difficultyMenu.render(m_window.get(), 5, 2,
+        m_difficultyMenu.render(m_menuWindow.get(), 0, 0,
                                 static_cast<int>(m_difficulty));
     }
     else
     {
-        m_mainMenu.render(m_window.get(), 5, 2);
+        m_mainMenu.render(m_menuWindow.get(), 0, 0);
     }
+
+    m_window->refresh();
 }
 
 void MainMenuState::addMainMenuItems()

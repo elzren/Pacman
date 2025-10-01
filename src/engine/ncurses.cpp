@@ -33,7 +33,9 @@ NCurses::NCurses()
         init_pair(GREEN_DEFAULT, COLOR_GREEN, -1);
         init_pair(RED_DEFAULT, COLOR_RED, -1);
         init_pair(MAGENTA_DEFAULT, COLOR_MAGENTA, -1);
+        init_pair(CYAN_DEFAULT, COLOR_CYAN, -1);
         init_pair(YELLOW_DEFAULT, COLOR_YELLOW, -1);
+        init_pair(BLACK_DEFAULT, COLOR_BLACK, -1);
         init_pair(WHITE_DEFAULT, COLOR_WHITE, -1);
         init_pair(BLUE_BLUE, COLOR_BLUE, COLOR_BLUE);
         init_pair(CYAN_CYAN, COLOR_CYAN, COLOR_CYAN);

@@ -6,12 +6,17 @@
 #include "engine/state.hpp"
 #include "engine/stateManager.hpp"
 #include "engine/window.hpp"
+#include <memory>
 
 class MainMenuState : public State
 {
   private:
     std::unique_ptr<Window> m_window{};
+    std::unique_ptr<Window> m_menuWindow{};
+
     Menu m_mainMenu{};
+    int m_menuWidth{12};
+
     Menu m_difficultyMenu{};
     bool m_difficultyMenuOpen{false};
     Difficulty m_difficulty{};

@@ -34,7 +34,7 @@ void Menu::render(Window* win, int startX, int startY, int selectedIndex)
         {
             if (i == m_currentIndex)
             {
-                win->addChar(startX, startY + i, '>');
+                win->addChar(startX, startY + i, '>', NCurses::MAGENTA_DEFAULT);
             }
             if (static_cast<int>(i) == selectedIndex)
             {
