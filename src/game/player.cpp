@@ -93,18 +93,22 @@ void Player::handleInput(int input)
     switch (input)
     {
     case 'h':
+    case 'a':
     case KEY_LEFT:
         m_inputDirection = Direction::LEFT;
         break;
     case 'l':
+    case 'd':
     case KEY_RIGHT:
         m_inputDirection = Direction::RIGHT;
         break;
     case 'k':
+    case 'w':
     case KEY_UP:
         m_inputDirection = Direction::UP;
         break;
     case 'j':
+    case 's':
     case KEY_DOWN:
         m_inputDirection = Direction::DOWN;
         break;

@@ -14,10 +14,12 @@ void Menu::handleInput(int input)
     switch (input)
     {
     case 'k':
+    case 'w':
     case KEY_UP:
         moveUp();
         break;
     case 'j':
+    case 's':
     case KEY_DOWN:
         moveDown();
         break;
