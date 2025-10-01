@@ -53,6 +53,16 @@ void Window::addString(int x, int y, const std::string& str)
     mvwaddstr(m_window, y, x, str.c_str());
 }
 
+void Window::addString(int x, int y, const std::string& str,
+                       NCurses::ColorPair colorPair)
+{
+    wattron(m_window, A_BOLD);
+    wattron(m_window, COLOR_PAIR(colorPair));
+    mvwaddstr(m_window, y, x, str.c_str());
+    wattroff(m_window, COLOR_PAIR(colorPair));
+    wattroff(m_window, A_BOLD);
+}
+
 void Window::setTopLabel(std::string_view label) { m_topLabel = label; }
 void Window::setBottomLabel(std::string_view label) { m_bottomLabel = label; }
 

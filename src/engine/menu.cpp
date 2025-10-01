@@ -1,4 +1,5 @@
 #include "engine/menu.hpp"
+#include "engine/ncurses.hpp"
 #include <ncurses.h>
 
 void Menu::addItem(const MenuItem& item)
@@ -23,7 +24,7 @@ void Menu::handleInput(int input)
     }
 }
 
-void Menu::render(Window* win, int startX, int startY)
+void Menu::render(Window* win, int startX, int startY, int selectedIndex)
 {
     if (win)
     {
@@ -35,7 +36,15 @@ void Menu::render(Window* win, int startX, int startY)
             {
                 win->addChar(startX, startY + i, '>');
             }
-            win->addString(startX + 2, startY + i, m_items[i].label);
+            if (static_cast<int>(i) == selectedIndex)
+            {
+                win->addString(startX + 2, startY + i, m_items[i].label,
+                               NCurses::BLUE_DEFAULT);
+            }
+            else
+            {
+                win->addString(startX + 2, startY + i, m_items[i].label);
+            }
         }
 
         win->refresh();

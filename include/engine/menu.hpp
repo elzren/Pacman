@@ -19,7 +19,8 @@ class Menu
     const MenuItem* currentItem() const;
 
     void handleInput(int input);
-    void render(Window* win, int startX = 1, int startY = 1);
+    void render(Window* win, int startX = 1, int startY = 1,
+                int selectedIndex = -1);
 
     void moveUp();
     void moveDown();

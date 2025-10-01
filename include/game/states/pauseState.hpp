@@ -1,6 +1,7 @@
 #ifndef PAUSE_STATE_HPP
 #define PAUSE_STATE_HPP
 
+#include "engine/difficulty.hpp"
 #include "engine/menu.hpp"
 #include "engine/state.hpp"
 #include "engine/stateManager.hpp"
@@ -12,11 +13,13 @@ class PauseState : public State
   private:
     std::unique_ptr<Window> m_window{};
     Menu m_pauseMenu{};
+    Difficulty m_difficulty{};
     int m_width{20};
     int m_height{};
 
   public:
-    PauseState(bool resume = true, std::string_view label = "Paused");
+    PauseState(Difficulty difficulty, bool resume = true,
+               std::string_view label = "Paused");
     virtual ~PauseState();
 
     void handleInput(StateManager& manager, int input) override;

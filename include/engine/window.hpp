@@ -30,6 +30,8 @@ class Window
     void addChar(int x, int y, int ch);
     void addChar(int x, int y, int ch, NCurses::ColorPair colorPair);
     void addString(int x, int y, const std::string& str);
+    void addString(int x, int y, const std::string& str,
+                   NCurses::ColorPair colorPair);
 
     void setTopLabel(std::string_view label);
     void setBottomLabel(std::string_view label);

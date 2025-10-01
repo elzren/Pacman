@@ -1,6 +1,7 @@
 #ifndef GAME_STATE_HPP
 #define GAME_STATE_HPP
 
+#include "engine/difficulty.hpp"
 #include "engine/state.hpp"
 #include "engine/stateManager.hpp"
 #include "engine/window.hpp"
@@ -14,14 +15,15 @@ class GameState : public State
   private:
     std::unique_ptr<Window> m_window{};
     std::unique_ptr<Window> m_gameWindow{};
+    Difficulty m_difficulty{};
     Board m_board{};
     Player m_player{};
-    GhostManager m_ghostManager{};
+    GhostManager m_ghostManager{m_difficulty};
     int m_level{1};
     int frameCount{};
 
   public:
-    GameState();
+    GameState(Difficulty difficulty);
     virtual ~GameState();
 
     void initializeBoard();

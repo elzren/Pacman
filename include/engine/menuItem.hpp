@@ -11,7 +11,11 @@ struct MenuItem
         EXIT,
         RESUME,
         RESTART,
-        MAIN_MENU
+        MAIN_MENU,
+        DIFFICULTY,
+        EASY,
+        MEDIUM,
+        HARD
     };
 
     ItemId id{};

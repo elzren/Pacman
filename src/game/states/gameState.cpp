@@ -1,4 +1,5 @@
 #include "game/states/gameState.hpp"
+#include "engine/difficulty.hpp"
 #include "engine/direction.hpp"
 #include "engine/window.hpp"
 #include "game/boardUtils.hpp"
@@ -7,7 +8,7 @@
 #include <ncurses.h>
 #include <string>
 
-GameState::GameState()
+GameState::GameState(Difficulty difficulty) : m_difficulty{difficulty}
 {
     int terminalWidth, terminalHeight;
     getmaxyx(stdscr, terminalHeight, terminalWidth);
@@ -80,7 +81,7 @@ void GameState::handleInput(StateManager& manager, int input)
 {
     if (input == 27) // ESC key pressed
     {
-        manager.pushState(std::make_unique<PauseState>());
+        manager.pushState(std::make_unique<PauseState>(m_difficulty));
     }
 
     m_player.handleInput(input);
@@ -91,7 +92,8 @@ void GameState::update([[maybe_unused]] StateManager& manager)
     if (m_player.lives() == 0)
     {
         manager.popState();
-        manager.pushState(std::make_unique<PauseState>(false, "Game Over"));
+        manager.pushState(
+            std::make_unique<PauseState>(m_difficulty, false, "Game Over"));
         return;
     }
 

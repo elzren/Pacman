@@ -1,4 +1,5 @@
 #include "game/ghostManager.hpp"
+#include "engine/difficulty.hpp"
 #include "engine/ncurses.hpp"
 #include "engine/window.hpp"
 #include "game/chaserGhost.hpp"
@@ -7,7 +8,14 @@
 #include "game/player.hpp"
 #include <memory>
 
-GhostManager::GhostManager() { m_ghosts.reserve(m_maxGhosts); }
+GhostManager::GhostManager(Difficulty difficulty) : m_difficulty{difficulty}
+{
+    m_ghosts.reserve(m_maxGhosts);
+
+    m_spawnTimeout = m_difficulty == Difficulty::HARD     ? 20
+                     : m_difficulty == Difficulty::MEDIUM ? 30
+                                                          : m_spawnTimeout;
+}
 
 void GhostManager::handleCollision(Player& player, const Board& board)
 {
@@ -39,17 +47,48 @@ void GhostManager::spawnGhost(Position position)
 {
     if (m_ghosts.size() < m_maxGhosts && m_ghostMoves % m_spawnTimeout == 0)
     {
-        if (m_ghosts.size() == m_maxGhosts - 1)
+        switch (m_difficulty)
         {
-            m_ghosts.emplace_back(std::make_unique<ChaserGhost>(position));
-        }
-        else if (m_ghosts.size() == m_maxGhosts - 2)
-        {
-            m_ghosts.emplace_back(std::make_unique<OneEyedGhost>(position));
-        }
-        else
-        {
-            m_ghosts.emplace_back(std::make_unique<Ghost>(position));
+        case Difficulty::EASY:
+            if (m_ghosts.size() == m_maxGhosts - 1) // last one
+            {
+                m_ghosts.emplace_back(std::make_unique<ChaserGhost>(position));
+            }
+            else if (m_ghosts.size() == m_maxGhosts - 2) // second last one
+            {
+                m_ghosts.emplace_back(std::make_unique<OneEyedGhost>(position));
+            }
+            else
+            {
+                m_ghosts.emplace_back(std::make_unique<Ghost>(position));
+            }
+            break;
+        case Difficulty::MEDIUM:
+            if (m_ghosts.size() == m_maxGhosts - 1)
+            {
+                m_ghosts.emplace_back(std::make_unique<ChaserGhost>(position));
+            }
+            else if (m_ghosts.size() == m_maxGhosts - 2 ||
+                     m_ghosts.size() == m_maxGhosts - 3)
+            {
+                m_ghosts.emplace_back(std::make_unique<OneEyedGhost>(position));
+            }
+            else
+            {
+                m_ghosts.emplace_back(std::make_unique<Ghost>(position));
+            }
+            break;
+        case Difficulty::HARD:
+            if (m_ghosts.size() == m_maxGhosts - 1 ||
+                m_ghosts.size() == m_maxGhosts - 2)
+            {
+                m_ghosts.emplace_back(std::make_unique<ChaserGhost>(position));
+            }
+            else
+            {
+                m_ghosts.emplace_back(std::make_unique<OneEyedGhost>(position));
+            }
+            break;
         }
     }
 }

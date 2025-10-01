@@ -1,11 +1,13 @@
 #include "game/states/pauseState.hpp"
+#include "engine/difficulty.hpp"
 #include "game/states/gameState.hpp"
 #include "game/states/mainMenuState.hpp"
 #include <string_view>
 
-PauseState::PauseState(bool resume, std::string_view label)
+PauseState::PauseState(Difficulty difficulty, bool resume,
+                       std::string_view label)
+    : m_difficulty{difficulty}
 {
-
     addPauseMenuItems(resume);
 
     m_height = m_pauseMenu.itemsCount() + 2;
@@ -36,11 +38,11 @@ void PauseState::handleInput(StateManager& manager, int input)
             break;
         case MenuItem::RESTART:
             manager.popState(2);
-            manager.pushState(std::make_unique<GameState>());
+            manager.pushState(std::make_unique<GameState>(m_difficulty));
             break;
         case MenuItem::MAIN_MENU:
             manager.popState(2);
-            manager.pushState(std::make_unique<MainMenuState>());
+            manager.pushState(std::make_unique<MainMenuState>(m_difficulty));
             break;
         case MenuItem::EXIT:
             manager.popState(2);
