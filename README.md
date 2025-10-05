@@ -2,6 +2,9 @@
 
 A simple ascii pacman game written in C++ using nurses for terminal based rendering.
 
+
+<img width="910" height="720" alt="" src="https://github.com/user-attachments/assets/63783839-d122-4f07-8960-76c47f80d027" />
+
 ## Requirements
 
 - A Unix-like system (Linux, macOS, or WSL on Windows)
